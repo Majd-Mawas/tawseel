@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.auth')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Tawseel</title>
-    <link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
-</head>
+@section('title', 'Login')
 
-<body>
+@section('content')
     <form class="signin-form" method="POST" action="{{ route('login') }}">
         @csrf
         <div class="form-heading">SIGN IN</div>
@@ -35,8 +29,7 @@
         </div>
 
         <div class="forgot-password">
-            {{-- <a href="{{ route('password.request') }}">Forgot password?</a> --}}
-            <a href="#">Forgot password?</a>
+            <a href="{{ route('password.request') }}">Forgot password?</a>
         </div>
 
         <button class="submit" type="submit">Sign In</button>
@@ -45,6 +38,4 @@
             Don't have an account? <a href="{{ route('register') }}">Sign up</a>
         </div>
     </form>
-</body>
-
-</html>
+@endsection
