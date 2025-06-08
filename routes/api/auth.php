@@ -15,9 +15,9 @@ Route::name('api.')->middleware('guest')->group(function () {
     Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])->name('password.email');
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
+    Route::post('/verify-email', [EmailVerificationController::class, 'verify'])->name('verification.verify');
     Route::prefix('email')->middleware('auth:sanctum')->group(function () {
-        Route::get('/verify', [EmailVerificationController::class, 'status'])->name('verification.status');
-        Route::get('/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
-        Route::post('/verification-notification', [EmailVerificationController::class, 'resend'])->name('verification.send');
+        Route::get('/verify/status', [EmailVerificationController::class, 'status'])->name('verification.status');
+        Route::post('/verification-notification', [EmailVerificationController::class, 'send'])->name('verification.send');
     });
 });

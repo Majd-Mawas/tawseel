@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use App\Notifications\EmailVerificationCodeNotification;
 use App\Traits\ApiResponse;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
@@ -42,10 +43,14 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
-        // return " asdf";
+        $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
 
-        event(new Registered($user));
+        // event(new Registered($user));
+        
+        $code = $user->generateVerificationCode();
+        $user->notify(new EmailVerificationCodeNotification($code));
+
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
