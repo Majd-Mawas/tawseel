@@ -21,9 +21,9 @@ class RegisterRequest extends FormRequest
             'password' => ['required', 'string', 'min:8'],
             'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-\s()]*$/'],
             'gender' => ['required', 'in:male,female'],
-            'address' => ['required', 'string', 'max:500'],
-            'longitude' => ['required', 'string', 'max:500'],
-            'latitude' => ['required', 'string', 'max:500'],
+            // 'address' => ['required', 'string', 'max:500'],
+            // 'longitude' => ['required', 'string', 'max:500'],
+            // 'latitude' => ['required', 'string', 'max:500'],
         ];
     }
 

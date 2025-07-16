@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('meals', function (Blueprint $table) {
             $table->id();
-            
+
             $table->string('name');
-            $table->text('descrition');
+            $table->text('description');
             $table->double('price');
             $table->boolean('is_available')->default(true);
 
