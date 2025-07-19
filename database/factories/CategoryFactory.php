@@ -18,6 +18,18 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => fake()->randomElement([
+                'مشاوي',
+                'مقبلات',
+                'أطباق رئيسية',
+                'شوربات',
+                'حلويات',
+                'فطور',
+                'سندويشات',
+                'أكلات شعبية',
+                'نباتي',
+                'مشروبات',
+            ]),
             'name' => fake()->name(),
             'restaurant_id' => Restaurant::inRandomOrder()->first()->id
         ];
