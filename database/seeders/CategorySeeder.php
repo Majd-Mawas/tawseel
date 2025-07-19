@@ -13,7 +13,7 @@ class CategorySeeder extends BaseSeeder
      */
     public function run(): void
     {
-        $categories = Category::factory(30)->create();
+        $categories = Category::factory(100)->create();
 
         foreach ($categories as $category) {
             $category->addMedia($this->createFakeImage($category->name))->toMediaCollection('image');

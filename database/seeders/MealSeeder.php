@@ -13,7 +13,7 @@ class MealSeeder extends BaseSeeder
      */
     public function run(): void
     {
-        $meals = Meal::factory(25)->create();
+        $meals = Meal::factory(200)->create();
 
         foreach ($meals as $key => $meal) {
             $meal->addMedia($this->createFakeImage($meal->name))->toMediaCollection('image');
