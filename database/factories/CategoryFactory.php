@@ -17,19 +17,35 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $restaurant = Restaurant::inRandomOrder()->first();
+
         return [
-            'name' => fake()->randomElement([
-                'مشاوي',
-                'مقبلات',
-                'أطباق رئيسية',
-                'شوربات',
-                'حلويات',
-                'فطور',
-                'سندويشات',
-                'أكلات شعبية',
-                'نباتي',
-                'مشروبات',
-            ]),
+            'name' => fake()->randomElement(
+                $restaurant->type == 'restaurant' ? [
+                    'مشاوي',
+                    'مقبلات',
+                    'أطباق رئيسية',
+                    'شوربات',
+                    'حلويات',
+                    'فطور',
+                    'سندويشات',
+                    'أكلات شعبية',
+                    'نباتي',
+                    'مشروبات',
+                ] : [
+                    'مواد غذائية',
+                    'ألبسة رجالية',
+                    'ألبسة نسائية',
+                    'ألبسة أطفال',
+                    'إلكترونيات',
+                    'مواد تنظيف',
+                    'أدوات منزلية',
+                    'عطور و مستحضرات',
+                    'ألعاب أطفال',
+                    'معلبات ومشروبات',
+                ]
+            ),
+            'type' => $restaurant->type,
             'restaurant_id' => Restaurant::inRandomOrder()->first()->id
         ];
     }

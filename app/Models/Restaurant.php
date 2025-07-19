@@ -11,6 +11,7 @@ class Restaurant extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\RestaurantFactory> */
     use HasFactory, InteractsWithMedia;
+    protected $guarded = [];
 
     public function admin()
     {

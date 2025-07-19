@@ -11,7 +11,7 @@ class Meal extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\MealFactory> */
     use HasFactory, InteractsWithMedia;
-
+    protected $guarded = [];
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);

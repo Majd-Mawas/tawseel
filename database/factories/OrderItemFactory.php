@@ -18,9 +18,12 @@ class OrderItemFactory extends Factory
      */
     public function definition(): array
     {
+        $order = Order::inRandomOrder()->first();
+        $meal_id = $order?->restaurant?->meals()?->inRandomOrder()?->first() ?? 1;
+
         return [
-            'order_id' => Order::inRandomOrder()->first()->id,
-            'meal_id' => Meal::inRandomOrder()->first()->id,
+            'order_id' => $order->id,
+            'meal_id' => $meal_id->id,
             'quantity' =>  fake()->numberBetween(1, 5),
             'price' => fake()->numberBetween(100, 500),
         ];

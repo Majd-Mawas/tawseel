@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->enum('type', ['restaurant', 'shop_center'])->default('restaurant');
 
             $table->timestamps();
         });

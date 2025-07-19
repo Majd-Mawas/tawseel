@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
+            $table->enum('type', ['restaurant', 'shop_center'])->default('restaurant');
             $table->foreignId('restaurant_id')->nullable()->constrained('restaurants')->cascadeOnDelete();
-            
+
             $table->timestamps();
         });
     }
