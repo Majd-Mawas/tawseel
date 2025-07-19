@@ -23,7 +23,7 @@ class OrderItemFactory extends Factory
 
         return [
             'order_id' => $order->id,
-            'meal_id' => $meal_id->id,
+            'meal_id' => $meal_id,
             'quantity' =>  fake()->numberBetween(1, 5),
             'price' => fake()->numberBetween(100, 500),
         ];
