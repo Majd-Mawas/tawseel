@@ -30,7 +30,6 @@ class CategoryFactory extends Factory
                 'نباتي',
                 'مشروبات',
             ]),
-            'name' => fake()->name(),
             'restaurant_id' => Restaurant::inRandomOrder()->first()->id
         ];
     }
