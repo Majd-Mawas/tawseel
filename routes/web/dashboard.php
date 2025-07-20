@@ -6,6 +6,8 @@ use App\Http\Controllers\MealDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantDashboardController;
 use App\Http\Middleware\RestaurantAdminMiddleware;
+use App\Http\Middleware\SuperAdminMiddleware;
+use App\Http\Controllers\SuperAdminRestaurantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,4 +52,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/dashboard/categories/{category}', [CategoryDashboardController::class, 'update'])->name('dashboard.categories.update');
         Route::delete('/dashboard/categories/{category}', [CategoryDashboardController::class, 'destroy'])->name('dashboard.categories.destroy');
     });
+});
+
+Route::middleware(SuperAdminMiddleware::class)->prefix('admin')->name('admin.')->group(function () {
+    // Restaurant Management Routes
+    Route::get('/restaurants', [SuperAdminRestaurantController::class, 'index'])->name('restaurants.index');
+    Route::get('/restaurants/create', [SuperAdminRestaurantController::class, 'create'])->name('restaurants.create');
+    Route::post('/restaurants', [SuperAdminRestaurantController::class, 'store'])->name('restaurants.store');
+    Route::get('/restaurants/{restaurant}/edit', [SuperAdminRestaurantController::class, 'edit'])->name('restaurants.edit');
+    Route::post('/restaurants/{restaurant}', [SuperAdminRestaurantController::class, 'update'])->name('restaurants.update');
+    Route::delete('/restaurants/{restaurant}', [SuperAdminRestaurantController::class, 'destroy'])->name('restaurants.destroy');
 });

@@ -7,7 +7,7 @@ use App\Enums\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RestaurantAdminMiddleware
+class SuperAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,12 +18,13 @@ class RestaurantAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || Auth::user()->role !== UserRole::RestaurantAdmin->value) {
-            if (Auth::check() && Auth::user()->role === UserRole::SuperAdmin->value) {
-                return redirect()->route('admin.restaurants.index');
+        if (!Auth::check() || Auth::user()->role !== UserRole::SuperAdmin->value) {
+            if (Auth::check() && Auth::user()->role === UserRole::RestaurantAdmin->value) {
+                return redirect()->route('dashboard.restaurant');
             }
-            return redirect()->route('login')->with('error', 'Restaurant admin access required.');
+            return redirect()->route('login')->with('error', 'Super admin access required.');
         }
+
 
         return $next($request);
     }

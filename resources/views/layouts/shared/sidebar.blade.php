@@ -28,19 +28,29 @@
         <ul class="menu" data-fc-type="accordion">
             <li class="menu-title">Menu</li>
 
+            {{-- @echo(Auth::user()->role) --}}
+            @if (Auth::check() && Auth::user()->role === \App\Enums\UserRole::SuperAdmin->value)
+                <li class="menu-item">
+                    <a href="{{ route('admin.restaurants.index') }}" class="menu-link">
+                        <span class="menu-icon"><i class="mgc_building_2_line"></i></span>
+                        <span class="menu-text"> Restaurants </span>
+                    </a>
+                </li>
+            @endif
+
 
             @if (Auth::check() && Auth::user()->role === \App\Enums\UserRole::RestaurantAdmin->value)
                 <li class="menu-item">
                     <a href="{{ route('dashboard.restaurant') }}" class="menu-link">
                         <span class="menu-icon"><i class="mgc_settings_6_line"></i></span>
-                        <span class="menu-text"> Restaurant Management </span>
+                        <span class="menu-text"> Center Management </span>
                     </a>
                 </li>
 
                 <li class="menu-item">
                     <a href="{{ route('dashboard.meals.index') }}" class="menu-link">
                         <span class="menu-icon"><i class="mgc_bowl_line"></i></span>
-                        <span class="menu-text"> Meals Management </span>
+                        <span class="menu-text"> Items Management </span>
                     </a>
                 </li>
 
