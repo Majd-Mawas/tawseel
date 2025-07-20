@@ -21,7 +21,7 @@ class OrderFactory extends Factory
     {
         return [
             'restaurant_id' => Restaurant::inRandomOrder()->first()->id,
-            'user_id' => User::inRandomOrder()->first()->id,
+            'user_id' => User::where('role', 'customer')->inRandomOrder()->first()->id,
             'status' => fake()->randomElement(OrderStatus::cases()),
             'total_price' => fake()->numberBetween(1000, 1500),
             'delivery_fee' => fake()->numberBetween(10, 50),
