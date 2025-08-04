@@ -19,6 +19,8 @@ Route::middleware('auth:sanctum')->name('api')->group(function () {
     Route::ApiResource('orders', OrderController::class);
     Route::ApiResource('restaurants', RestaurantController::class);
     Route::ApiResource('categories', CategoryController::class);
+
+    Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
 });
 
 Route::ApiResource('centers', RestaurantController::class)->only(['index', 'show']);
