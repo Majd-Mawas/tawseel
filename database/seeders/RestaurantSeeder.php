@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Imports\ProductsImport;
 use App\Models\Restaurant;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RestaurantSeeder extends BaseSeeder
 {
@@ -14,40 +14,13 @@ class RestaurantSeeder extends BaseSeeder
      */
     public function run(): void
     {
-        // Aleppo city center coordinates
-        $aleppoCenter = [
-            'latitude' => 36.2021,
-            'longitude' => 37.1343
-        ];
+        // Import data from Excel file
+        Excel::import(new ProductsImport, storage_path('app/products.xlsx'));
 
-        // Define a radius (in degrees) to distribute restaurants around Aleppo
-        // Approximately 5km radius
-        $radius = 0.045;
-
-        $restaurants = [];
-
-        for ($i = 1; $i <= 20; $i++) {
-            // Generate random coordinates within Aleppo city boundaries
-            $angle = mt_rand(0, 360) * (pi() / 180); // Random angle in radians
-            $distance = mt_rand(0, 100) / 100 * $radius; // Random distance within radius
-
-            // Calculate new coordinates
-            $latitude = $aleppoCenter['latitude'] + ($distance * cos($angle));
-            $longitude = $aleppoCenter['longitude'] + ($distance * sin($angle));
-
-            // Create restaurant with Aleppo coordinates
-            $restaurants[] = Restaurant::factory()->create([
-                'user_id' => User::factory()->create([
-                    'role' => 'restaurant_admin',
-                    'email' => 'center-' . $i . '@email.com'
-                ]),
-                'latitude' => $latitude,
-                'longitude' => $longitude
-            ]);
-        }
-
+        // Add images to all restaurants
+        $restaurants = Restaurant::all();
         foreach ($restaurants as $restaurant) {
-            $restaurant->addMedia($this->createFakeImage($restaurant['name']))->toMediaCollection('image');
+            $restaurant->addMedia($this->createFakeImage($restaurant->name))->toMediaCollection('image');
         }
     }
 }

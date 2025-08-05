@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Meal;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class MealSeeder extends BaseSeeder
@@ -13,9 +12,9 @@ class MealSeeder extends BaseSeeder
      */
     public function run(): void
     {
-        $meals = Meal::factory(200)->create();
+        $meals = Meal::all();
 
-        foreach ($meals as $key => $meal) {
+        foreach ($meals as $meal) {
             $meal->addMedia($this->createFakeImage($meal->name))->toMediaCollection('image');
         }
     }

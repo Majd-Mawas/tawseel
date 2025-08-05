@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\MealController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\RestaurantController;
 use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
