@@ -14,9 +14,11 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return Restaurant::all()->load('media');
+        return Restaurant::withCount('meals')
+            ->orderBy('meals_count', 'asc')
+            ->with('media')
+            ->get();
     }
-
 
     /**
      * Display the specified resource.
