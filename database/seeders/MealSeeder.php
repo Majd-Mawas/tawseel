@@ -14,8 +14,8 @@ class MealSeeder extends BaseSeeder
     {
         $meals = Meal::all();
 
-        // foreach ($meals as $meal) {
-        //     $meal->addMedia($this->createFakeImage($meal->name))->toMediaCollection('image');
-        // }
+        foreach ($meals as $meal) {
+            $meal->addMedia($this->createFakeImage($meal->name))->toMediaCollection('image');
+        }
     }
 }
