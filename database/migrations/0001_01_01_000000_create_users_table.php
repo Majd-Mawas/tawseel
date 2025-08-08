@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone');
-            $table->enum('role', ['customer', 'super_admin', 'restaurant_admin'])->default('customer');
+            $table->enum('role', ['customer', 'super_admin', 'restaurant_admin','driver'])->default('customer');
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
 

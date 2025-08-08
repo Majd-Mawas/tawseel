@@ -47,4 +47,14 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Configure the model as a driver.
+     */
+    public function driver(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'role' => 'driver',
+        ]);
+    }
 }
