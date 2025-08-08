@@ -58,7 +58,7 @@ class ProductsImport implements ToCollection, WithHeadingRow
                     'user_id' => $user->id,
                     'latitude' => $latitude,
                     'longitude' => $longitude,
-                    'type' => 'restaurant' // Assuming all are restaurants
+                    'type' => collect(['restaurant', 'shop_center'])->random()
                 ]);
 
                 $this->restaurants[$row['shop_name']] = $restaurant;

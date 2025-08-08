@@ -26,6 +26,12 @@ class RestaurantController extends Controller
     public function show($id)
     {
         $restaurant = Restaurant::find($id);
-        return $restaurant->load('meals', 'meals.media', 'meals.category');
+        return $restaurant->load([
+            'meals' => function($query) {
+                $query->limit(60);
+            },
+            'meals.media',
+            'meals.category'
+        ]);
     }
 }

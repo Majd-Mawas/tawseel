@@ -12,12 +12,16 @@ Route::name('api.')->middleware('guest')->group(function () {
 
     Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
-    Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])->name('password.email');
-    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
     Route::post('/verify-email', [EmailVerificationController::class, 'verify'])->name('verification.verify');
     Route::prefix('email')->middleware('auth:sanctum')->group(function () {
         Route::get('/verify/status', [EmailVerificationController::class, 'status'])->name('verification.status');
         Route::post('/verification-notification', [EmailVerificationController::class, 'send'])->name('verification.send');
     });
+});
+
+Route::name('api.')->group(function () {
+    Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])->name('password.code');
+    Route::post('/verify-reset-code', [ResetPasswordController::class, 'verifyResetCode'])->name('password.verify');
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
 });
