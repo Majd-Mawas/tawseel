@@ -23,7 +23,11 @@ class RoutingController extends Controller
     public function index(Request $request)
     {
         if (Auth::user()) {
-            return redirect('index');
+            if (Auth::user()->role == "restaurant_admin") {
+                return redirect()->route('admin.restaurants.index');
+            } elseif (Auth::user()->role == "super_admin") {
+                return redirect()->route('dashboard.restaurant');
+            }
         } else {
             return redirect('login');
         }
@@ -39,7 +43,7 @@ class RoutingController extends Controller
 
         $mode = $request->query('mode');
         $demo = $request->query('demo');
-     
+
         if ($first == "assets")
             return redirect('home');
 
@@ -60,7 +64,7 @@ class RoutingController extends Controller
 
 
 
-    return view($first .'.'. $second, ['mode' => $mode, 'demo' => $demo]);
+        return view($first . '.' . $second, ['mode' => $mode, 'demo' => $demo]);
     }
 
     /**
@@ -74,8 +78,8 @@ class RoutingController extends Controller
         if ($first == "assets")
             return redirect('home');
 
-        dd($first,$second,$third);
-        
+        dd($first, $second, $third);
+
         return view($first . '.' . $second . '.' . $third, ['mode' => $mode, 'demo' => $demo]);
     }
 }
