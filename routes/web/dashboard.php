@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CategoryDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantDashboardController;
+use App\Http\Controllers\SuperAdminMealController;
 use App\Http\Middleware\RestaurantAdminMiddleware;
 use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Controllers\SuperAdminRestaurantController;
@@ -62,4 +64,20 @@ Route::middleware(SuperAdminMiddleware::class)->prefix('admin')->name('admin.')-
     Route::get('/restaurants/{restaurant}/edit', [SuperAdminRestaurantController::class, 'edit'])->name('restaurants.edit');
     Route::post('/restaurants/{restaurant}', [SuperAdminRestaurantController::class, 'update'])->name('restaurants.update');
     Route::delete('/restaurants/{restaurant}', [SuperAdminRestaurantController::class, 'destroy'])->name('restaurants.destroy');
+
+    // Meal Management Routes for Restaurants
+    Route::get('/restaurants/{restaurant}/meals', [SuperAdminMealController::class, 'index'])->name('restaurants.meals.index');
+    Route::get('/restaurants/{restaurant}/meals/create', [SuperAdminMealController::class, 'create'])->name('restaurants.meals.create');
+    Route::post('/restaurants/{restaurant}/meals', [SuperAdminMealController::class, 'store'])->name('restaurants.meals.store');
+    Route::get('/restaurants/{restaurant}/meals/{meal}/edit', [SuperAdminMealController::class, 'edit'])->name('restaurants.meals.edit');
+    Route::post('/restaurants/{restaurant}/meals/{meal}', [SuperAdminMealController::class, 'update'])->name('restaurants.meals.update');
+    Route::delete('/restaurants/{restaurant}/meals/{meal}', [SuperAdminMealController::class, 'destroy'])->name('restaurants.meals.destroy');
+
+    // Driver Management Routes
+    Route::get('/drivers', [DriverController::class, 'index'])->name('drivers.index');
+    Route::get('/drivers/create', [DriverController::class, 'create'])->name('drivers.create');
+    Route::post('/drivers', [DriverController::class, 'store'])->name('drivers.store');
+    Route::get('/drivers/{driver}/edit', [DriverController::class, 'edit'])->name('drivers.edit');
+    Route::post('/drivers/{driver}', [DriverController::class, 'update'])->name('drivers.update');
+    Route::delete('/drivers/{driver}', [DriverController::class, 'destroy'])->name('drivers.destroy');
 });

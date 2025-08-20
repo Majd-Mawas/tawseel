@@ -1,4 +1,4 @@
-@extends('layouts.vertical', ['title' => 'Restaurants Management', 'sub_title' => 'Admin', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
+@extends('layouts.vertical', ['title' => 'Drivers Management', 'sub_title' => 'Admin', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
 
 @section('content')
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -35,16 +35,16 @@
                 <div class="card">
                     <div class="shadow rounded-lg">
                         <div class="card-header flex justify-between items-center">
-                            <h5 class="card-title">Restaurants</h5>
-                            <a href="{{ route('admin.restaurants.create') }}"
+                            <h5 class="card-title">Drivers</h5>
+                            <a href="{{ route('admin.drivers.create') }}"
                                 class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                Add New Restaurant
+                                Add New Driver
                             </a>
                         </div>
                         <div class="px-4 py-5 sm:p-6">
-                            @if ($restaurants->isEmpty())
+                            @if ($drivers->isEmpty())
                                 <div class="text-center py-4">
-                                    <p class="text-gray-500">No restaurants found.</p>
+                                    <p class="text-gray-500">No drivers found.</p>
                                 </div>
                             @else
                                 <div class="overflow-x-auto">
@@ -61,11 +61,7 @@
                                                 </th>
                                                 <th scope="col"
                                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Type
-                                                </th>
-                                                <th scope="col"
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Admin
+                                                    Email
                                                 </th>
                                                 <th scope="col"
                                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -78,44 +74,36 @@
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-gray-200">
-                                            @foreach ($restaurants as $restaurant)
+                                            @foreach ($drivers as $driver)
                                                 <tr>
                                                     <td class="px-6 py-4 whitespace-nowrap">
-                                                        @if ($restaurant->getFirstMediaUrl('image'))
-                                                            <img src="{{ $restaurant->getFirstMediaUrl('image') }}"
-                                                                alt="{{ $restaurant->name }}" class="h-12 w-12 object-cover rounded">
-                                                        @else
-                                                            <div class="h-12 w-12 bg-gray-200 rounded flex items-center justify-center">
-                                                                <span class="text-gray-500">No Image</span>
-                                                            </div>
-                                                        @endif
+                                                        <div
+                                                            class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
+                                                            <span
+                                                                class="text-gray-500">{{ substr($driver->name, 0, 1) }}</span>
+                                                        </div>
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap">
-                                                        <div class="text-sm font-medium ">{{ $restaurant->name }}</div>
+                                                        <div class="text-sm font-medium">{{ $driver->name }}</div>
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap">
-                                                        <span
-                                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $restaurant->type === 'restaurant' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
-                                                            {{ ucfirst($restaurant->type) }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap">
-                                                        <div class="text-sm ">{{ $restaurant->admin->name ?? 'N/A' }}</div>
-                                                        <div class="text-sm text-gray-500">{{ $restaurant->admin->email ?? '' }}</div>
+                                                        <div class="text-sm">{{ $driver->email }}</div>
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                        {{ $restaurant->phone }}
+                                                        {{ $driver->phone }}
                                                     </td>
-                                                    <td class="p-3">
-                                                        <div class="flex gap-2">
-                                                            <a href="{{ route('admin.restaurants.edit', $restaurant->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                                            <a href="{{ route('admin.restaurants.meals.index', $restaurant->id) }}" class="btn btn-sm btn-info">Manage Meals</a>
-                                                            <form action="{{ route('admin.restaurants.destroy', $restaurant->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this restaurant?')">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                            </form>
-                                                        </div>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                        <a href="{{ route('admin.drivers.edit', $driver) }}"
+                                                            class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                                        <form action="{{ route('admin.drivers.destroy', $driver) }}"
+                                                            method="POST" class="inline-block">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="text-red-600 hover:text-red-900"
+                                                                onclick="return confirm('Are you sure you want to delete this driver?')">
+                                                                Delete
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             @endforeach
