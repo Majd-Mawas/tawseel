@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\OrderStatus;
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -123,7 +126,7 @@ class OrderController extends Controller
             $order = \App\Models\Order::create([
                 'restaurant_id' => $validated['center_id'],
                 'user_id' => $user->id,
-                'status' => \App\Enums\OrderStatus::Pending,
+                'status' => OrderStatus::Pending,
                 'total_price' => $totalPrice,
                 'delivery_fee' => $deliveryFee,
                 'delivery_time_estimate' => $deliveryTimeEstimate,
@@ -135,16 +138,62 @@ class OrderController extends Controller
                 $order->items()->create($item);
             }
 
+            // Find and assign the nearest available driver
+            $nearestDriver = $this->findNearestDriver($order);
+
+            if ($nearestDriver) {
+                // Assign the order to the driver and update status
+                $order->driver_id = $nearestDriver->id;
+                $order->status = OrderStatus::OnTheWay;
+                $order->save();
+            }
+
             DB::commit();
 
-            $order->refresh()->load(['items.meal', 'restaurant']);
+            $order->refresh()->load(['items.meal', 'restaurant', 'driver']);
 
-
-            return $this->successResponse($order, 'Order placed successfully');
+            return $this->successResponse($order, 'Order placed successfully' .
+                ($nearestDriver ? ' and assigned to driver' : ''));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->errorResponse('Failed to place order: ' . $e->getMessage(), 500);
         }
+    }
+
+    /**
+     * Find the nearest available driver to an order
+     */
+    private function findNearestDriver(Order $order)
+    {
+        // Get all available drivers (users with driver role)
+        $drivers = User::where('role', UserRole::Driver->value)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get();
+
+        if ($drivers->isEmpty()) {
+            return null;
+        }
+
+        $nearestDriver = null;
+        $shortestDistance = PHP_FLOAT_MAX;
+
+        foreach ($drivers as $driver) {
+            // Calculate distance between driver and order delivery location
+            $distance = $this->calculateDistance(
+                $driver->latitude,
+                $driver->longitude,
+                $order->latitude,
+                $order->longitude
+            );
+
+            if ($distance < $shortestDistance) {
+                $shortestDistance = $distance;
+                $nearestDriver = $driver;
+            }
+        }
+
+        return $nearestDriver;
     }
 
     private function calculateDistance($lat1, $lon1, $lat2, $lon2)
