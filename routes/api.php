@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->name('api')->group(function () {
     Route::ApiResource('categories', CategoryController::class);
 
     Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
+    Route::post('orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('cancel-order');
 
     // Driver routes
     Route::prefix('driver')->name('.driver')->group(function () {

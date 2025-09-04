@@ -213,4 +213,30 @@ class OrderController extends Controller
 
         return $distance;
     }
+
+    /**
+     * Cancel an order
+     */
+    public function cancelOrder(Order $order, Request $request)
+    {
+        // Check if the order belongs to the authenticated user
+        if ($order->user_id !== $request->user()->id) {
+            return $this->errorResponse('You are not authorized to cancel this order', 403);
+        }
+
+        // // Check if the order can be cancelled (only pending or preparing orders can be cancelled)
+        // if (!in_array($order->status, [OrderStatus::Pending->value, OrderStatus::Preparing->value])) {
+        //     return $this->errorResponse('This order cannot be cancelled', 400);
+        // }
+
+        try {
+            // Update the order status to cancelled
+            $order->status = OrderStatus::Cancelled;
+            $order->save();
+
+            return $this->successResponse($order, 'Order cancelled successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse('Failed to cancel order: ' . $e->getMessage(), 500);
+        }
+    }
 }
