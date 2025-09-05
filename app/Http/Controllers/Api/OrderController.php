@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -122,7 +123,7 @@ class OrderController extends Controller
                     'price' => $price,
                 ];
             }
-
+            $restaurant = Restaurant::findOrFail($validated['center_id']);
             $order = \App\Models\Order::create([
                 'restaurant_id' => $validated['center_id'],
                 'user_id' => $user->id,
@@ -130,8 +131,8 @@ class OrderController extends Controller
                 'total_price' => $totalPrice,
                 'delivery_fee' => $deliveryFee,
                 'delivery_time_estimate' => $deliveryTimeEstimate,
-                'latitude' => $validated['latitude'],
-                'longitude' => $validated['longitude'],
+                'latitude' => $restaurant->latitude,
+                'longitude' => $restaurant->longitude,
             ]);
 
             foreach ($items as $item) {
