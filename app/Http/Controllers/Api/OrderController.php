@@ -131,8 +131,8 @@ class OrderController extends Controller
                 'total_price' => $totalPrice,
                 'delivery_fee' => $deliveryFee,
                 'delivery_time_estimate' => $deliveryTimeEstimate,
-                'latitude' => $restaurant->latitude,
-                'longitude' => $restaurant->longitude,
+                'longitude' => $validated['longitude'],
+                'latitude' => $validated['latitude'],
             ]);
 
             foreach ($items as $item) {
@@ -140,7 +140,7 @@ class OrderController extends Controller
             }
 
             // Find and assign the nearest available driver
-            $nearestDriver = $this->findNearestDriver($order);
+            $nearestDriver = $this->findNearestDriver($order, $restaurant->longitude, $restaurant->latitude);
 
             if ($nearestDriver) {
                 // Assign the order to the driver and update status
@@ -164,7 +164,7 @@ class OrderController extends Controller
     /**
      * Find the nearest available driver to an order
      */
-    private function findNearestDriver(Order $order)
+    private function findNearestDriver(Order $order, $longitude, $latitude)
     {
         // Get all available drivers (users with driver role)
         $drivers = User::where('role', UserRole::Driver->value)
@@ -184,8 +184,8 @@ class OrderController extends Controller
             $distance = $this->calculateDistance(
                 $driver->latitude,
                 $driver->longitude,
-                $order->latitude,
-                $order->longitude
+                $latitude,
+                $longitude
             );
 
             if ($distance < $shortestDistance) {
